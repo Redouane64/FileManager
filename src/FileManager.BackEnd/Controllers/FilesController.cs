@@ -30,12 +30,8 @@ namespace FileManager.BackEnd.Controllers
 
         // GET api/files/<filename>
         [HttpGet("{filename}", Name = nameof(GetFile))]
-        public ActionResult GetFile([FromRoute]string filename)
+        public ActionResult GetFile(string filename)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest();
-            }
 
             if(_filesService.TryGetFile(filename, out var file))
             {
@@ -72,9 +68,14 @@ namespace FileManager.BackEnd.Controllers
 
         // DELETE api/files/<filename>
         [HttpDelete("{filename}")]
-        public void Delete(string filename)
+        public IActionResult Delete(string filename)
         {
-            // TODO: 
+            if (_filesService.TryDeleteFile(filename))
+            {
+                return Ok();
+            }
+
+            return NotFound();
         }
     }
 }
