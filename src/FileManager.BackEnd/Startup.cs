@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FileManager.BackEnd.Filters;
 using FileManager.BackEnd.Models;
 using FileManager.BackEnd.Services;
 using Microsoft.AspNetCore.Builder;
@@ -26,7 +27,11 @@ namespace FileManager.BackEnd
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc(options =>
+            {
+                options.Filters.Add<FileResultFilter>();
+
+            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.Configure<FileManagerOptions>(Configuration.GetSection("FileManager"));
             services.AddScoped<IFilesService, FilesService>();

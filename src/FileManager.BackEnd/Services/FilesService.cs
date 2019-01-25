@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using FileManager.BackEnd.Models;
 using Microsoft.Extensions.Options;
+
 using File = FileManager.BackEnd.Models.File;
 
 namespace FileManager.BackEnd.Services
@@ -34,7 +34,7 @@ namespace FileManager.BackEnd.Services
             return files;
         }
 
-        public async Task CreateFile(File file, CancellationToken cancellationToken)
+        public async Task CreateFileAsync(File file, CancellationToken cancellationToken)
         {
             using (var fileStream = file.FileStream)
             using (var outFile = System.IO.File.Create(Path.Combine(_options.Directory, file.FileName)))

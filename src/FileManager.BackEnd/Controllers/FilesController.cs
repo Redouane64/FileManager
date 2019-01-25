@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 using FileManager.BackEnd.Helpers;
 using FileManager.BackEnd.Models;
 using FileManager.BackEnd.Services;
@@ -35,11 +34,8 @@ namespace FileManager.BackEnd.Controllers
 
             if(_filesService.TryGetFile(filename, out var file))
             {
-                var ext = file.FileName.Split('.').Last().ToLower();
-                var contentType = "application/unknown";
 
-                if (ext == "txt") contentType = SupportedContentTypes.Text;
-                else if (ext == "jpg" || ext.ToLower() == "jpeg") contentType = SupportedContentTypes.Image;
+                var contentType = SupportedContentTypes.GetContentType(file.FileName);
 
                 return File(file.FileStream, contentType);
             }
@@ -48,8 +44,8 @@ namespace FileManager.BackEnd.Controllers
         }
 
         // POST api/files
-        [HttpPost(Name = nameof(Post))]
-        public IActionResult Post(IFormFile file, CancellationToken cancellationToken = default)
+        [HttpPost(Name = nameof(PostAsync))]
+        public async Task<IActionResult> PostAsync(IFormFile file, CancellationToken cancellationToken = default)
         {
             
             var formFile = Request.Form.Files[0];
@@ -61,7 +57,7 @@ namespace FileManager.BackEnd.Controllers
                 FileStream = formFile.OpenReadStream()
             };
 
-            _filesService.CreateFile(model, cancellationToken);
+            await _filesService.CreateFileAsync(model, cancellationToken);
 
             return Ok();
         }
