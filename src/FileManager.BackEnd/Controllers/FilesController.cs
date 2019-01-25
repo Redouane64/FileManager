@@ -19,29 +19,44 @@ namespace FileManager.BackEnd.Controllers
         }
 
         // GET api/files
-        [HttpGet]
-        public ActionResult<IEnumerable<File>> Get()
+        [HttpGet(Name = nameof(GetFiles))]
+        public ActionResult<IEnumerable<File>> GetFiles()
         {
             return Ok(_filesService.GetFiles());
         }
 
         // GET api/files/<filename>
-        [HttpGet("{id}")]
-        public ActionResult<string> Get(string filename)
+        [HttpGet("{filename}", Name = nameof(GetFile))]
+        public ActionResult<string> GetFile(string filename)
         {
+            // TODO:
             throw new NotImplementedException();
         }
 
         // POST api/files
-        [HttpPost]
-        public void Post(IFormFile file)
+        [HttpPost(Name = nameof(Post))]
+        public IActionResult Post(IFormFile file)
         {
+            
+            var formFile = Request.Form.Files[0];
+
+            var model = new File()
+            {
+                FileName = formFile.FileName,
+                Size = formFile.Length,
+                Stream = formFile.OpenReadStream()
+            };
+
+            _filesService.CreateFile(model);
+
+            return Ok();
         }
 
         // DELETE api/files/<filename>
         [HttpDelete("{filename}")]
         public void Delete(string filename)
         {
+            // TODO: 
         }
     }
 }

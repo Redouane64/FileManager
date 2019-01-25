@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using FileManager.BackEnd.Models;
 
 namespace FileManager.BackEnd.Services
@@ -7,5 +8,7 @@ namespace FileManager.BackEnd.Services
     {
 
         IEnumerable<File> GetFiles();
+
+        Task CreateFile(File file);
     }
 }

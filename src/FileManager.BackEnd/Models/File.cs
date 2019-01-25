@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using Newtonsoft.Json;
 
 namespace FileManager.BackEnd.Models
 {
@@ -9,5 +11,8 @@ namespace FileManager.BackEnd.Models
         public long Size { get; set; }
 
         public DateTime LastModified { get; set; }
+
+        [JsonIgnore]
+        public Stream Stream { get; set; }
     }
 }
