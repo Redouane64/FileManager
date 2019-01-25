@@ -63,5 +63,18 @@ namespace FileManager.BackEnd.Services
 
             return fileInfo.Exists;
         }
+
+        public bool TryDeleteFile(string filename)
+        {
+            var path = Path.Combine(_options.Directory, filename);
+            var fileInfo = new FileInfo(path);
+
+            if (fileInfo.Exists)
+            {
+                fileInfo.Delete();
+            }
+
+            return fileInfo.Exists;
+        }
     }
 }

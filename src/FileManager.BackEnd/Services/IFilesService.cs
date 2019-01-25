@@ -14,5 +14,7 @@ namespace FileManager.BackEnd.Services
         Task CreateFile(File file, CancellationToken cancellationToken);
 
         bool TryGetFile(string filename, out File data);
+
+        bool TryDeleteFile(string filename);
     }
 }
