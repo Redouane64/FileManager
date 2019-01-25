@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FileManager.BackEnd.Models;
+using FileManager.BackEnd.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,11 +13,18 @@ namespace FileManager.BackEnd.Controllers
     [ApiController]
     public class FilesController : ControllerBase
     {
+        private readonly IFilesService _filesService;
+
+        public FilesController(IFilesService filesService)
+        {
+            _filesService = filesService;
+        }
+
         // GET api/files
         [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
+        public ActionResult<IEnumerable<File>> Get()
         {
-            throw new NotImplementedException();
+            return Ok(_filesService.GetFiles());
         }
 
         // GET api/files/<filename>

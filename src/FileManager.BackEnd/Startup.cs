@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FileManager.BackEnd.Models;
+using FileManager.BackEnd.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -28,6 +29,7 @@ namespace FileManager.BackEnd
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.Configure<FileManagerOptions>(Configuration.GetSection("FileManager"));
+            services.AddScoped<IFilesService, FilesService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
