@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using FileManager.BackEnd.Helpers;
 using FileManager.BackEnd.Models;
 using FileManager.BackEnd.Services;
 using Microsoft.AspNetCore.Http;
@@ -27,15 +30,30 @@ namespace FileManager.BackEnd.Controllers
 
         // GET api/files/<filename>
         [HttpGet("{filename}", Name = nameof(GetFile))]
-        public ActionResult<string> GetFile(string filename)
+        public ActionResult GetFile([FromRoute]string filename)
         {
-            // TODO:
-            throw new NotImplementedException();
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            if(_filesService.TryGetFile(filename, out var file))
+            {
+                var ext = file.FileName.Split('.').Last().ToLower();
+                var contentType = "application/unknown";
+
+                if (ext == "txt") contentType = SupportedContentTypes.Text;
+                else if (ext == "jpg" || ext.ToLower() == "jpeg") contentType = SupportedContentTypes.Image;
+
+                return File(file.FileStream, contentType);
+            }
+
+            return NotFound();
         }
 
         // POST api/files
         [HttpPost(Name = nameof(Post))]
-        public IActionResult Post(IFormFile file)
+        public IActionResult Post(IFormFile file, CancellationToken cancellationToken = default)
         {
             
             var formFile = Request.Form.Files[0];
@@ -44,10 +62,10 @@ namespace FileManager.BackEnd.Controllers
             {
                 FileName = formFile.FileName,
                 Size = formFile.Length,
-                Stream = formFile.OpenReadStream()
+                FileStream = formFile.OpenReadStream()
             };
 
-            _filesService.CreateFile(model);
+            _filesService.CreateFile(model, cancellationToken);
 
             return Ok();
         }

@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
-using FileManager.BackEnd.Models;
+using File = FileManager.BackEnd.Models.File;
 
 namespace FileManager.BackEnd.Services
 {
@@ -9,6 +11,8 @@ namespace FileManager.BackEnd.Services
 
         IEnumerable<File> GetFiles();
 
-        Task CreateFile(File file);
+        Task CreateFile(File file, CancellationToken cancellationToken);
+
+        bool TryGetFile(string filename, out File data);
     }
 }

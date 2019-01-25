@@ -13,6 +13,6 @@ namespace FileManager.BackEnd.Models
         public DateTime LastModified { get; set; }
 
         [JsonIgnore]
-        public Stream Stream { get; set; }
+        public Stream FileStream { get; set; }
     }
 }
