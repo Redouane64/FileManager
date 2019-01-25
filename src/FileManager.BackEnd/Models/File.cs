@@ -12,6 +12,9 @@ namespace FileManager.BackEnd.Models
 
         public DateTime LastModified { get; set; }
 
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public string Location { get; set; }
+
         [JsonIgnore]
         public Stream FileStream { get; set; }
     }
