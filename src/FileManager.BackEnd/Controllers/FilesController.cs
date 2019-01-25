@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using FileManager.BackEnd.Models;
 using FileManager.BackEnd.Services;
 using Microsoft.AspNetCore.Http;

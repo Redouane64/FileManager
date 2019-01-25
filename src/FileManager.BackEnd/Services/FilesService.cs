@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using FileManager.BackEnd.Models;
 using Microsoft.Extensions.Options;
 using File = FileManager.BackEnd.Models.File;
@@ -25,7 +23,6 @@ namespace FileManager.BackEnd.Services
                                  .Select(file => new File
                                  {
                                      FileName = file.Name,
-                                     Extension = file.Extension,
                                      Size =  file.Length,
                                      LastModified = file.LastWriteTime
                                  })
