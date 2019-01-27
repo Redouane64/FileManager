@@ -54,6 +54,10 @@
             margin-bottom: 0;
         }
 
+        .progress {
+            margin: 0;
+        }
+
         .upload-btn {
             margin: 32px 24px;
         }
@@ -71,6 +75,9 @@
             <input type="file" id="file" data-bind="value: file">
             <a id="upload-btn" class="waves-effect waves-light green btn-large">
                 <i class="material-icons right">cloud_upload</i>Upload</a>
+        </div>
+        <div class="progress">
+            <div class="determinate" data-bind="style: { width: uploadPercentage }"></div>
         </div>
         <div class="divider"></div>
         <div class="section">
