@@ -1,0 +1,43 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "filesize@4.0.0",
+      "destination": "wwwroot/js/",
+      "files": [
+        "filesize.min.js"
+      ]
+    },
+    {
+      "library": "moment.js@2.23.0",
+      "destination": "wwwroot/js/",
+      "files": [
+        "moment.min.js"
+      ]
+    },
+    {
+      "library": "materialize@1.0.0",
+      "destination": "wwwroot/",
+      "files": [
+        "css/materialize.min.css",
+        "js/materialize.min.js"
+      ]
+    },
+    {
+      "provider": "cdnjs",
+      "library": "knockout@3.4.2",
+      "destination": "wwwroot/js/",
+      "files": [
+        "knockout-min.js"
+      ]
+    },
+    {
+      "library": "axios@0.18.0",
+      "destination": "wwwroot/js/",
+      "files": [
+        "axios.min.js"
+      ]
+    }
+  ]
+}

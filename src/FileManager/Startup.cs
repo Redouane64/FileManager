@@ -1,19 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using FileManager.BackEnd.Filters;
-using FileManager.BackEnd.Models;
-using FileManager.BackEnd.Services;
+﻿using FileManager.Filters;
+using FileManager.Models;
+using FileManager.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
-namespace FileManager.BackEnd
+namespace FileManager
 {
     public class Startup
     {
@@ -27,8 +21,6 @@ namespace FileManager.BackEnd
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors();
-
             services.AddMvc(options =>
             {
                 options.Filters.Add<FileResultFilter>();
@@ -47,8 +39,9 @@ namespace FileManager.BackEnd
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseCors(options => options.AllowAnyOrigin());
-
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
+            
             app.UseMvc();
         }
     }

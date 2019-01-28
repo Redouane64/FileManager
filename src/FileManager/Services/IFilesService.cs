@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using File = FileManager.Models.File;
 
-using File = FileManager.BackEnd.Models.File;
-
-namespace FileManager.BackEnd.Services
+namespace FileManager.Services
 {
     public interface IFilesService
     {

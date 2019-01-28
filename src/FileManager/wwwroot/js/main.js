@@ -9,32 +9,36 @@ var File = function (data) {
     self.location = data.location;
 
     let iconFromFilename = function (filename) {
-        if(filename.endsWith("txt")) {
-            return "images/txt-file-icon.png";
-        } else if(filename.endsWith("jpg") || filename.endsWith("jpeg")) {
-            return "images/jpg-file-icon.png";
-        } else {
-            return "images/file-icon.png";
+        if (filename.endsWith("txt"))
+        {
+            return "assets/txt-file-icon.png";
+        } else if (filename.endsWith("jpg") || filename.endsWith("jpeg"))
+        {
+            return "assets/jpg-file-icon.png";
+        } else
+        {
+            return "assets/file-icon.png";
         }
-    }
+    };
 
     this.icon = iconFromFilename(self.name);
 
     this.delete = function () {
-        console.log("Delete file: ", self.name);
+
     };
 
     this.view = function () {
-        console.log("View file: ", self.name);        
+
     };
 }
 
 var FileManagerViewModel = function () {
     
     let self = this;
-    const url = "http://localhost:5000/api/files";
+    const url = "/api/files";
 
-    self.getfiles = function () {
+    self.getfiles = function ()
+    {
         axios.get(url)
              .then(function (response) {
                 self.files(response.data.map(function (element) {
@@ -47,6 +51,7 @@ var FileManagerViewModel = function () {
     };
 
     self.files = ko.observableArray(self.getfiles());
+    self.uploadPercentage = ko.observable();
 
     self.file = ko.observable();
     self.file.subscribe(function () {
@@ -58,7 +63,24 @@ var FileManagerViewModel = function () {
     };
 
     self.upload = function () {
-        console.log("Upload file: ", self.file());
+
+        let data = new FormData();
+        data.append("File", document.getElementById("file").files[0]);
+
+        let config = {
+            onUploadProgress: function (e)
+            {
+                self.uploadPercentage(Math.round((e.loaded * 100) / e.total) + " px");
+            }
+        };
+
+        axios.post(url, data, config)
+             .then(function (response) {
+                 self.refersh();
+             })
+             .catch(function (error) {  
+                 console.log(error);
+             });
     };
 
 };
@@ -72,7 +94,7 @@ var FileManagerViewModel = function () {
     {
         uploadButton.onclick = function () {
             filePicker.click();
-        }
+        };
     }
 
 })();

@@ -3,12 +3,11 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using FileManager.BackEnd.Models;
+using FileManager.Models;
 using Microsoft.Extensions.Options;
+using File = FileManager.Models.File;
 
-using File = FileManager.BackEnd.Models.File;
-
-namespace FileManager.BackEnd.Services
+namespace FileManager.Services
 {
     public class FilesService : IFilesService
     {

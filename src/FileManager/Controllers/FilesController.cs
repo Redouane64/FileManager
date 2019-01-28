@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using FileManager.BackEnd.Helpers;
-using FileManager.BackEnd.Models;
-using FileManager.BackEnd.Services;
+using FileManager.Helpers;
+using FileManager.Models;
+using FileManager.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace FileManager.BackEnd.Controllers
+namespace FileManager.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

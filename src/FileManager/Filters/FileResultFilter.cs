@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
-using FileManager.BackEnd.Controllers;
-using FileManager.BackEnd.Models;
+using FileManager.Controllers;
+using FileManager.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.Routing;
 
-namespace FileManager.BackEnd.Filters
+namespace FileManager.Filters
 {
     public class FileResultFilter : IResultFilter
     {

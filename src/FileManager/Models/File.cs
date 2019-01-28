@@ -2,7 +2,7 @@
 using System.IO;
 using Newtonsoft.Json;
 
-namespace FileManager.BackEnd.Models
+namespace FileManager.Models
 {
     public class File
     {
