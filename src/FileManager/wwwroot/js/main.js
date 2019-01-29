@@ -1,14 +1,16 @@
 //
-var File = function (data) {
-    
-    let self = this;
+var File = function (data)
+{
+
+    var self = this;
 
     self.name = data.fileName;
     self.size = filesize(data.size);
     self.modified = moment(data.lastModified).fromNow();
     self.location = data.location;
 
-    let iconFromFilename = function (filename) {
+    var iconFromFilename = function (filename)
+    {
         if (filename.endsWith("txt"))
         {
             return "assets/txt-file-icon.png";
@@ -21,25 +23,18 @@ var File = function (data) {
         }
     };
 
-    this.icon = iconFromFilename(self.name);
+    self.icon = iconFromFilename(self.name);
 
-    this.delete = function () {
-
-    };
-
-    this.view = function () {
-
-    };
-}
+};
 
 var FileManagerViewModel = function () {
     
-    let self = this;
-    const url = "/api/files";
+    var self = this;
+    var apiUrl = "/api/files";
 
     self.getfiles = function ()
     {
-        axios.get(url)
+        axios.get(apiUrl)
              .then(function (response) {
                 self.files(response.data.map(function (element) {
                     return new File(element);
@@ -51,7 +46,7 @@ var FileManagerViewModel = function () {
     };
 
     self.files = ko.observableArray(self.getfiles());
-    self.uploadPercentage = ko.observable();
+    self.uploading = ko.observable(false);
 
     self.file = ko.observable();
     self.file.subscribe(function () {
@@ -67,22 +62,34 @@ var FileManagerViewModel = function () {
         let data = new FormData();
         data.append("File", document.getElementById("file").files[0]);
 
-        let config = {
-            onUploadProgress: function (e)
-            {
-                self.uploadPercentage(Math.round((e.loaded * 100) / e.total) + " px");
-            }
-        };
-
-        axios.post(url, data, config)
+        self.uploading(true);
+        console.log(self.uploading());
+        axios.post(apiUrl, data)
              .then(function (response) {
+                 self.uploading(false);
+                 console.log(self.uploading());
+
                  self.refersh();
              })
              .catch(function (error) {  
+                 self.uploading(false);
                  console.log(error);
              });
     };
 
+    self.delete = function (file) {
+
+        var data = {
+            data: file.name
+        };
+
+        axios.delete(url, data);
+    };
+
+    self.view = function (file) {
+        var preview = window.open(file.location, "height=300,width=300");
+        preview.focus();
+    };
 };
 
 (function() {

@@ -73,11 +73,9 @@
     <div class="container z-depth-1">
         <div class="row left-align toolbar">
             <input type="file" id="file" data-bind="value: file">
-            <a id="upload-btn" class="waves-effect waves-light green btn-large">
-                <i class="material-icons right">cloud_upload</i>Upload</a>
-        </div>
-        <div class="progress">
-            <div class="determinate" data-bind="style: { width: uploadPercentage }"></div>
+            <a id="upload-btn" class="waves-effect waves-light green btn-large" data-bind="css: uploading() ? disabled : '' ">
+                <i class="material-icons right">cloud_upload</i>Upload
+            </a>
         </div>
         <div class="divider"></div>
         <div class="section">
@@ -98,8 +96,8 @@
                         <td data-bind="text: size"></td>
                         <td data-bind="text: modified"></td>
                         <td>
-                            <a data-bind="click: view" class="waves-effect waves-light btn-floating cyan"><i class="material-icons">pageview</i></a>
-                            <a class="waves-effect waves-light btn-floating red"><i class="material-icons">delete</i></a>
+                            <a data-bind="click: $parent.view" class="waves-effect waves-light btn-floating cyan"><i class="material-icons">pageview</i></a>
+                            <a data-bind="click: $parent.delete" class="waves-effect waves-light btn-floating red"><i class="material-icons">delete</i></a>
                         </td>
                     </tr>
                 </tbody>
