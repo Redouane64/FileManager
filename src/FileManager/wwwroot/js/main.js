@@ -8,22 +8,22 @@ var File = function (data)
     self.size = filesize(data.size);
     self.modified = moment(data.lastModified).fromNow();
     self.location = data.location;
-
-    var iconFromFilename = function (filename)
+    self.extension = self.name.split(".").pop().toLowerCase();
+    self.icon = (function ()
     {
-        if (filename.endsWith("txt"))
+        if (self.extension === "txt")
         {
             return "assets/txt-file-icon.png";
-        } else if (filename.endsWith("jpg") || filename.endsWith("jpeg"))
+        }
+        else if (self.extension === "jpg" || self.extension === "jpeg")
         {
             return "assets/jpg-file-icon.png";
-        } else
+        }
+        else
         {
             return "assets/file-icon.png";
         }
-    };
-
-    self.icon = iconFromFilename(self.name);
+    })();
 
 };
 
@@ -53,6 +53,14 @@ var FileManagerViewModel = function () {
     self.file.subscribe(function () {
         self.upload();
     });
+
+    const viewable = ["txt", "jpg", "jpeg"];
+
+    // Check if file of viewable type.
+    self.canView = function (extension)
+    {
+        return viewable.indexOf(extension) != -1;
+    };
 
     // Retrieve files from server.
     self.refersh = function () {
@@ -89,11 +97,10 @@ var FileManagerViewModel = function () {
 
     // Open new window to view a file.
     self.view = function (file) {
-        var preview = window.open(file.location, "_blank");
+        var preview = window.open(file.location);
         preview.focus();
     };
 
-    self.viewable = ko.observable(false);
 };
 
 (function() {
