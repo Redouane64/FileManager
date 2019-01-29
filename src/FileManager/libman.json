@@ -1,43 +1,69 @@
 {
   "version": "1.0",
   "defaultProvider": "cdnjs",
-  "libraries": [
+  "libraries":
+  [
     {
       "library": "filesize@4.0.0",
       "destination": "wwwroot/js/",
-      "files": [
+      "files":
+      [
         "filesize.min.js"
       ]
     },
     {
       "library": "moment.js@2.23.0",
       "destination": "wwwroot/js/",
-      "files": [
+      "files":
+      [
         "moment.min.js"
-      ]
-    },
-    {
-      "library": "materialize@1.0.0",
-      "destination": "wwwroot/",
-      "files": [
-        "css/materialize.min.css",
-        "js/materialize.min.js"
       ]
     },
     {
       "provider": "cdnjs",
       "library": "knockout@3.4.2",
       "destination": "wwwroot/js/",
-      "files": [
+      "files":
+      [
         "knockout-min.js"
       ]
     },
     {
       "library": "axios@0.18.0",
       "destination": "wwwroot/js/",
-      "files": [
+      "files":
+      [
         "axios.min.js"
       ]
+    },
+    {
+      "provider": "cdnjs",
+      "library": "bootswatch@4.2.1",
+      "destination": "wwwroot/css/",
+      "files":
+      [
+        "lumen/bootstrap.min.css"
+      ]
+    },
+    {
+      "provider": "cdnjs",
+      "library": "jquery@3.3.1",
+      "destination": "wwwroot/js/",
+      "files":
+      [
+        "jquery.min.js"
+      ]
     }
+  ,
+{
+  "provider": "cdnjs",
+  "library": "bootstrap-modal@2.2.6",
+  "destination": "wwwroot/",
+  "files": [
+    "js/bootstrap-modalmanager.min.js",
+    "css/bootstrap-modal.min.css",
+    "js/bootstrap-modal.min.js"
   ]
+}
+]
 }

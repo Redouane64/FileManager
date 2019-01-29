@@ -41,55 +41,59 @@ var FileManagerViewModel = function () {
                 }));
              })
              .catch(function (error) {
-                console.log(error);
+                 // TODO:
              });
     };
 
+    // Files list.
     self.files = ko.observableArray(self.getfiles());
-    self.uploading = ko.observable(false);
 
+    // File to upload.
     self.file = ko.observable();
     self.file.subscribe(function () {
         self.upload();
     });
 
+    // Retrieve files from server.
     self.refersh = function () {
-        self.getfiles();
+        self.files(self.getfiles());
     };
 
+    // Upload file to server.
     self.upload = function () {
 
-        let data = new FormData();
+        var data = new FormData();
         data.append("File", document.getElementById("file").files[0]);
 
-        self.uploading(true);
-        console.log(self.uploading());
         axios.post(apiUrl, data)
              .then(function (response) {
-                 self.uploading(false);
-                 console.log(self.uploading());
-
                  self.refersh();
              })
              .catch(function (error) {  
-                 self.uploading(false);
-                 console.log(error);
+                 // TODO:
              });
     };
 
+    // Delete file from server.
     self.delete = function (file) {
 
         var data = {
             data: file.name
         };
 
-        axios.delete(url, data);
+        axios.delete(apiUrl + "\\" + file.name, data)
+             .then(function () {
+            self.refersh();
+        });
     };
 
+    // Open new window to view a file.
     self.view = function (file) {
-        var preview = window.open(file.location, "height=300,width=300");
+        var preview = window.open(file.location, "_blank");
         preview.focus();
     };
+
+    self.viewable = ko.observable(false);
 };
 
 (function() {
