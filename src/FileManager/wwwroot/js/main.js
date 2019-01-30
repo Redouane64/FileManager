@@ -1,18 +1,27 @@
 //
+
 var File = function (data)
 {
 
     var self = this;
 
+    self.fileIcon = {
+        "text/plain": "assets/txt-file-icon.png",
+        "image/jpeg": "assets/jpg-file-icon.png",
+        "application/unknown": "assets/file-icon.png"
+    };
+
     self.name = data.name;
     self.size = filesize(data.size);
     self.modified = moment(data.lastModifiedDate).fromNow();
     self.location = data.location;
-    self.type = data.type;
-    self.icon = (function ()
+
+    self.type = ko.observable();
+
+    self.icon = ko.computed(function ()
     {
-        return "assets/file-icon.png";
-    })();
+        return self.fileIcon[self.type()];
+    });
 
 };
 
@@ -53,7 +62,11 @@ function FilesViewModel() {
                 }).forEach(function (file) {
 
                     // TODO: attach missing data to file.
-                    file.location = self.apiUrl.concat("/" + file.name);
+                    axios.head(file.location)
+                        .then(function (response)
+                        {
+                            file.type(response.headers["content-type"]);
+                        });
 
                     self.files.push(file);
                 });
@@ -74,11 +87,12 @@ function FilesViewModel() {
     self.supportedContentTypes = [ "text/plain", "image/jpeg" ];
 
     self.viewable = function (file) {
-        return self.supportedContentTypes.indexOf(file.type) !== -1;
+        return self.supportedContentTypes.indexOf(file.type()) !== -1;
     };
 
     // delete file.
-    self.delete = function (file) {
+    self.delete = function (file)
+    {
 
     };
 

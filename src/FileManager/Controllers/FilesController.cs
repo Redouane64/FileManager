@@ -28,11 +28,12 @@ namespace FileManager.Controllers
         }
 
         // GET api/files/<filename>
-        [HttpGet("{filename}", Name = nameof(GetFile))]
-        public ActionResult GetFile(string filename)
+        [HttpGet("{name}", Name = nameof(GetFile))]
+        [HttpHead("{name}", Name = nameof(GetFile))]
+        public ActionResult GetFile(string name)
         {
 
-            if(_filesService.TryGetFile(filename, out var file))
+            if(_filesService.TryGetFile(name, out var file))
             {
 
                 var contentType = SupportedContentTypes.GetContentType(file.Name);
