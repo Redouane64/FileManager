@@ -25,11 +25,11 @@ var File = function (data)
 
 };
 
-var uploadFile = function (url, data, callbacks)
+var upload = function (url, data, callbacks)
 {
     axios.post(url, data)
         .then(callbacks.success)
-        .catch(callback.fail);
+        .catch(callbacks.fail);
 };
 
 var deleteFile = function (url, data, callbacks)
@@ -39,7 +39,7 @@ var deleteFile = function (url, data, callbacks)
          .catch(callbacks.fail);
 };
 
-var downloadFiles = function (url, callbacks)
+var download = function (url, callbacks)
 {
     axios.get(url)
          .then(callbacks.success)
@@ -54,8 +54,8 @@ function FilesViewModel() {
 
     // properties and behaviors.
     self.fetch = function () {
-        console.log("Fetching data from server...");
-        downloadFiles(self.apiUrl, {
+        self.files([]);
+        download(self.apiUrl, {
             success: function (response) {
                 response.data.map(function (e) {
                     return new File(e);
@@ -103,11 +103,22 @@ function FilesViewModel() {
 
     // upload selected file.
     self.send = function (file) {
-        file.location = self.apiUrl.concat(file.name);
-        var newFile = new File(file);
-        self.files.push(newFile);
 
-        // TODO: Send to server.
+        // Send to server.
+        var data = new FormData();
+        data.append("File", file);
+
+        upload(self.apiUrl, data, {
+            success: function ()
+            {
+                self.fetch();
+            },
+            fail: function ()
+            {
+                // TODO: Do something with error.
+            }
+        });
+
     };
 };
 
