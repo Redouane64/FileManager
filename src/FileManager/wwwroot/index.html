@@ -24,7 +24,7 @@
 
     <nav class="navbar sticky-top navbar-expand-xl navbar-dark bg-primary">
         <div class="container justify-content-center">
-            <input type="file" name="file" id="file" data-bind="value: file">
+            <input type="file" name="file" id="file" data-bind="event: { change: function() { send($element.files[0]) } }">
             <button id="upload-btn" class="btn btn-success btn-lg" type="submit">
                 Upload
             </button>
@@ -54,7 +54,7 @@
                             <td data-bind="text: modified"></td>
                             <td style="padding: 2px">
                                 <div id="file-menu" class="btn-group-sm" role="group">
-                                    <button type="button" data-bind="click: $parent.view, enable: $parent.canView(extension)" class="btn btn-sm btn-primary">View</button>
+                                    <button type="button" data-bind="click: $parent.view, enable: $parent.viewable($data)" class="btn btn-sm btn-primary">View</button>
                                     <button type="button" data-bind="click: $parent.delete" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#deleteFileModal">Delete</button>
                                 </div>
                             </td>
@@ -74,7 +74,7 @@
     <script type="text/javascript" src="js/main.js"></script>
     <script>
         (function () {
-            ko.applyBindings(new FileManagerViewModel());
+            ko.applyBindings(new FilesViewModel());
         })();
     </script>
 </body>
