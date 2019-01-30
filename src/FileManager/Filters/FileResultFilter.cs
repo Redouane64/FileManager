@@ -21,12 +21,22 @@ namespace FileManager.Filters
             if(context.Result is ObjectResult result && result.StatusCode == 200)
             {
                 var urlHelper = _urlHelperFactory.GetUrlHelper(context);
-                var files = result.Value as List<File>;
 
-                foreach (File file in files)
+                if(result.Value is List<File> files)
+                {
+                    foreach (File file in files)
+                    {
+                        file.Location = urlHelper.Link(nameof(FilesController.GetFile), new { file.Name });
+                    }
+                }
+                else if(result.Value is File file)
                 {
                     file.Location = urlHelper.Link(nameof(FilesController.GetFile), new { file.Name });
+
+                    context.HttpContext.Response.Headers.Add(nameof(File.Location), file.Location);
+                    context.HttpContext.Response.Headers.Add(nameof(File.LastModifiedDate), file.LastModifiedDate.ToString("MM/dd/yyyy hh:mm:ss tt"));
                 }
+
             }
 
             

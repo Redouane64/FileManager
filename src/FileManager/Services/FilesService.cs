@@ -75,5 +75,26 @@ namespace FileManager.Services
 
             return fileInfo.Exists;
         }
+
+        public bool TryGetFileInfo(string filename, out File file)
+        {
+            var path = Path.Combine(_options.Directory, filename);
+            var fileInfo = new FileInfo(path);
+
+            if (fileInfo.Exists)
+            {
+                file = new File()
+                {
+                    Name = fileInfo.Name,
+                    Size = fileInfo.Length,
+                    LastModifiedDate = fileInfo.LastWriteTime,
+                    FileStream = null
+                };
+            }
+            else
+                file = null;
+
+            return fileInfo.Exists;
+        }
     }
 }

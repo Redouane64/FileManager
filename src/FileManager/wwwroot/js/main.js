@@ -13,8 +13,13 @@ var File = function (data)
 
     self.name = data.name;
     self.size = filesize(data.size);
-    self.modified = moment(data.lastModifiedDate).fromNow();
+    self.modified = ko.observable(data.lastModifiedDate);
     self.location = data.location;
+
+    self.modifiedFromNow = ko.computed(function ()
+    {
+        return moment(self.modified()).fromNow();
+    });
 
     self.type = ko.observable();
 
@@ -25,11 +30,11 @@ var File = function (data)
 
 };
 
-var uploadFile = function (url, data, callbacks)
+var upload = function (url, data, callbacks)
 {
     axios.post(url, data)
         .then(callbacks.success)
-        .catch(callback.fail);
+        .catch(callbacks.fail);
 };
 
 var deleteFile = function (url, data, callbacks)
@@ -39,7 +44,7 @@ var deleteFile = function (url, data, callbacks)
          .catch(callbacks.fail);
 };
 
-var downloadFiles = function (url, callbacks)
+var download = function (url, callbacks)
 {
     axios.get(url)
          .then(callbacks.success)
@@ -54,8 +59,8 @@ function FilesViewModel() {
 
     // properties and behaviors.
     self.fetch = function () {
-        console.log("Fetching data from server...");
-        downloadFiles(self.apiUrl, {
+        self.files([]);
+        download(self.apiUrl, {
             success: function (response) {
                 response.data.map(function (e) {
                     return new File(e);
@@ -80,9 +85,6 @@ function FilesViewModel() {
     // files list.
     self.files = ko.observableArray();
 
-    // Call fetch to retrieve remote data.
-    self.fetch();
-
     // viewable content-types.
     self.supportedContentTypes = [ "text/plain", "image/jpeg" ];
 
@@ -103,11 +105,38 @@ function FilesViewModel() {
 
     // upload selected file.
     self.send = function (file) {
-        file.location = self.apiUrl.concat(file.name);
-        var newFile = new File(file);
-        self.files.push(newFile);
 
-        // TODO: Send to server.
+        // Send to server.
+        var data = new FormData();
+        data.append("File", file);
+
+        upload(self.apiUrl, data, {
+            success: function ()
+            {
+                axios.head(self.apiUrl + "peek/" + file.name)
+                    .then(function (response)
+                    {
+                        var newFile = new File(file);
+
+                        newFile.location = response.headers["location"];
+                        var value = response.headers["lastmodifieddate"];
+                        newFile.modified(value);
+
+                        axios.head(newFile.location)
+                            .then(function (response)
+                            {
+                                newFile.type(response.headers["content-type"]);
+                            });
+
+                        self.files.push(newFile);
+                    });
+            },
+            fail: function ()
+            {
+                // TODO: Do something with error.
+            }
+        });
+
     };
 };
 

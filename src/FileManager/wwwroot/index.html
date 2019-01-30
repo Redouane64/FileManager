@@ -36,11 +36,11 @@
                 <table class="table table-sm table-hover" style="border-bottom: 1px">
                     <thead class="">
                         <tr>
-                            <th scope="col">
+                            <th scope="col" style="width: 5%">
                             </th>
-                            <th scope="col">File</th>
-                            <th scope="col">Size</th>
-                            <th scope="col">Modified</th>
+                            <th scope="col" style="width: 40%">File</th>
+                            <th scope="col" style="width: 10%">Size</th>
+                            <th scope="col" style="width: 20%">Modified</th>
                             <th scope=col></th>
                         </tr>
                     </thead>
@@ -51,7 +51,7 @@
                             </td>
                             <td data-bind="text: name"></td>
                             <td data-bind="text: size"></td>
-                            <td data-bind="text: modified"></td>
+                            <td data-bind="text: modifiedFromNow"></td>
                             <td style="padding: 2px">
                                 <div id="file-menu" class="btn-group-sm" role="group">
                                     <button type="button" data-bind="click: $parent.view, enable: $parent.viewable($data)" class="btn btn-sm btn-primary">View</button>
@@ -74,7 +74,11 @@
     <script type="text/javascript" src="js/main.js"></script>
     <script>
         (function () {
-            ko.applyBindings(new FilesViewModel());
+            var filesViewModel = new FilesViewModel();
+            ko.applyBindings(filesViewModel);
+
+            // Call fetch to retrieve remote data.
+            filesViewModel.fetch();
         })();
     </script>
 </body>

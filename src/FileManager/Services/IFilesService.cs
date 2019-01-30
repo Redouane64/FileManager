@@ -12,7 +12,9 @@ namespace FileManager.Services
 
         Task CreateFileAsync(File file, CancellationToken cancellationToken);
 
-        bool TryGetFile(string filename, out File data);
+        bool TryGetFile(string filename, out File file);
+
+        bool TryGetFileInfo(string filename, out File file);
 
         bool TryDeleteFile(string filename);
     }
