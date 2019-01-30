@@ -25,7 +25,7 @@ namespace FileManager.Filters
 
                 foreach (File file in files)
                 {
-                    file.Location = urlHelper.Link(nameof(FilesController.GetFile), new { file.FileName });
+                    file.Location = urlHelper.Link(nameof(FilesController.GetFile), new { file.Name });
                 }
             }
 

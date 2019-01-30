@@ -6,11 +6,11 @@ namespace FileManager.Models
 {
     public class File
     {
-        public string FileName { get; set; }
+        public string Name { get; set; }
 
         public long Size { get; set; }
 
-        public DateTime LastModified { get; set; }
+        public DateTime LastModifiedDate { get; set; }
 
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public string Location { get; set; }

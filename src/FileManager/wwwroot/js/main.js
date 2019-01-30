@@ -16,31 +16,25 @@ var File = function (data)
 
 };
 
-var upload = function (url, data, callbacks)
+var uploadFile = function (url, data, callbacks)
 {
     axios.post(url, data)
         .then(callbacks.success)
         .catch(callback.fail);
 };
 
-var remove = function (url, data, callbacks)
+var deleteFile = function (url, data, callbacks)
 {
     axios.delete(url, data)
          .then(callbacks.success)
          .catch(callbacks.fail);
 };
 
-var download = function (url, fail)
+var downloadFiles = function (url, callbacks)
 {
-    axios.get(apiUrl)
-        .then(function (response)
-        {
-            self.files(response.data.map(function (element)
-            {
-                return new File(element);
-            }));
-        })
-        .catch(fail);
+    axios.get(url)
+         .then(callbacks.success)
+         .catch(callbacks.fail);
 };
 
 function FilesViewModel() {
@@ -49,10 +43,32 @@ function FilesViewModel() {
     // api endpoint.
     self.apiUrl = "/api/files/";
 
-    // properties.
+    // properties and behaviors.
+    self.fetch = function () {
+        console.log("Fetching data from server...");
+        downloadFiles(self.apiUrl, {
+            success: function (response) {
+                response.data.map(function (e) {
+                    return new File(e);
+                }).forEach(function (file) {
+
+                    // TODO: attach missing data to file.
+                    file.location = self.apiUrl.concat("/" + file.name);
+
+                    self.files.push(file);
+                });
+            },
+            fail: function (error) {
+                // TODO: Do something with error.
+            }
+        });
+    };
 
     // files list.
     self.files = ko.observableArray();
+
+    // Call fetch to retrieve remote data.
+    self.fetch();
 
     // viewable content-types.
     self.supportedContentTypes = [ "text/plain", "image/jpeg" ];
@@ -78,34 +94,6 @@ function FilesViewModel() {
         self.files.push(newFile);
 
         // TODO: Send to server.
-    };
-};
-
-var FileManagerViewModel = function () {
-
-    // Upload file to server.
-    self.upload = function () {
-
-        var selectedFile = document.getElementById("file").files[0];
-        console.log(selectedFile);
-
-        self.files().push(new File({
-            fileName: selectedFile.name,
-            size: selectedFile.size,
-            modified: selectedFile.lastModified
-        }));
-
-        /*
-        var data = new FormData();
-        data.append("File", document.getElementById("file").files[0]);
-
-        axios.post(apiUrl, data)
-             .then(function (response) {
-                 self.refersh();
-             })
-             .catch(function (error) {  
-                 // TODO:
-             });*/
     };
 };
 

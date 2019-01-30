@@ -35,7 +35,7 @@ namespace FileManager.Controllers
             if(_filesService.TryGetFile(filename, out var file))
             {
 
-                var contentType = SupportedContentTypes.GetContentType(file.FileName);
+                var contentType = SupportedContentTypes.GetContentType(file.Name);
 
                 return File(file.FileStream, contentType);
             }
@@ -52,7 +52,7 @@ namespace FileManager.Controllers
 
             var model = new File()
             {
-                FileName = formFile.FileName,
+                Name = formFile.FileName,
                 Size = formFile.Length,
                 FileStream = formFile.OpenReadStream()
             };

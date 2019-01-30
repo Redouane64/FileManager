@@ -24,9 +24,9 @@ namespace FileManager.Services
                                  .Select(filename => new FileInfo(filename))
                                  .Select(fileInfo => new File
                                  {
-                                     FileName = fileInfo.Name,
+                                     Name = fileInfo.Name,
                                      Size =  fileInfo.Length,
-                                     LastModified = fileInfo.LastWriteTime
+                                     LastModifiedDate = fileInfo.LastWriteTime
                                  })
                                  .ToList();
 
@@ -36,7 +36,7 @@ namespace FileManager.Services
         public async Task CreateFileAsync(File file, CancellationToken cancellationToken)
         {
             using (var fileStream = file.FileStream)
-            using (var outFile = System.IO.File.Create(Path.Combine(_options.Directory, file.FileName)))
+            using (var outFile = System.IO.File.Create(Path.Combine(_options.Directory, file.Name)))
             {
                 await fileStream.CopyToAsync(outFile, cancellationToken);
             }
@@ -51,9 +51,9 @@ namespace FileManager.Services
             {
                 file = new File()
                 {
-                    FileName = fileInfo.Name,
+                    Name = fileInfo.Name,
                     Size = fileInfo.Length,
-                    LastModified = fileInfo.LastWriteTime,
+                    LastModifiedDate = fileInfo.LastWriteTime,
                     FileStream = fileInfo.OpenRead()
                 };
             }
