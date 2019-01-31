@@ -13,7 +13,7 @@ namespace FileManager.Services
     {
         private readonly FileManagerOptions _options;
 
-        public FilesService(IOptions<FileManagerOptions> options)
+        public FilesService(IOptionsSnapshot<FileManagerOptions> options)
         {
             _options = options.Value;
         }
