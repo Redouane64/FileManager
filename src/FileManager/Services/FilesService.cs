@@ -26,7 +26,7 @@ namespace FileManager.Services
                                  {
                                      Name = fileInfo.Name,
                                      Size =  fileInfo.Length,
-                                     LastModifiedDate = fileInfo.LastWriteTime
+                                     LastModifiedDate = fileInfo.LastWriteTime.ToString()
                                  })
                                  .ToList();
 
@@ -53,7 +53,7 @@ namespace FileManager.Services
                 {
                     Name = fileInfo.Name,
                     Size = fileInfo.Length,
-                    LastModifiedDate = fileInfo.LastWriteTime,
+                    LastModifiedDate = fileInfo.LastWriteTime.ToString(),
                     FileStream = fileInfo.OpenRead()
                 };
             }
@@ -87,7 +87,7 @@ namespace FileManager.Services
                 {
                     Name = fileInfo.Name,
                     Size = fileInfo.Length,
-                    LastModifiedDate = fileInfo.LastWriteTime,
+                    LastModifiedDate = fileInfo.LastWriteTime.ToString(),
                     FileStream = null
                 };
             }

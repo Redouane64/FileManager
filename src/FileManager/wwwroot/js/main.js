@@ -16,11 +16,6 @@ var File = function (data)
     self.modified = ko.observable(data.lastModifiedDate);
     self.location = data.location;
 
-    self.modifiedFromNow = ko.computed(function ()
-    {
-        return moment(self.modified()).fromNow();
-    });
-
     self.type = ko.observable();
 
     self.icon = ko.computed(function ()

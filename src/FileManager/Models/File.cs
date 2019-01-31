@@ -10,7 +10,7 @@ namespace FileManager.Models
 
         public long Size { get; set; }
 
-        public DateTime LastModifiedDate { get; set; }
+        public string LastModifiedDate { get; set; }
 
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public string Location { get; set; }

@@ -34,7 +34,7 @@ namespace FileManager.Filters
                     file.Location = urlHelper.Link(nameof(FilesController.GetFile), new { file.Name });
 
                     context.HttpContext.Response.Headers.Add(nameof(File.Location), file.Location);
-                    context.HttpContext.Response.Headers.Add(nameof(File.LastModifiedDate), file.LastModifiedDate.ToString("MM/dd/yyyy hh:mm:ss tt"));
+                    context.HttpContext.Response.Headers.Add(nameof(File.LastModifiedDate), file.LastModifiedDate.ToString());
                 }
 
             }
