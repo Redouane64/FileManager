@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace FileManager.BackEnd.Helpers
+namespace FileManager.Helpers
 {
     public static class SupportedContentTypes
     {

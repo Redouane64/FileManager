@@ -3,12 +3,11 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using FileManager.BackEnd.Models;
+using FileManager.Models;
 using Microsoft.Extensions.Options;
+using File = FileManager.Models.File;
 
-using File = FileManager.BackEnd.Models.File;
-
-namespace FileManager.BackEnd.Services
+namespace FileManager.Services
 {
     public class FilesService : IFilesService
     {
@@ -25,9 +24,9 @@ namespace FileManager.BackEnd.Services
                                  .Select(filename => new FileInfo(filename))
                                  .Select(fileInfo => new File
                                  {
-                                     FileName = fileInfo.Name,
+                                     Name = fileInfo.Name,
                                      Size =  fileInfo.Length,
-                                     LastModified = fileInfo.LastWriteTime
+                                     LastModifiedDate = fileInfo.LastWriteTime.ToString()
                                  })
                                  .ToList();
 
@@ -37,7 +36,7 @@ namespace FileManager.BackEnd.Services
         public async Task CreateFileAsync(File file, CancellationToken cancellationToken)
         {
             using (var fileStream = file.FileStream)
-            using (var outFile = System.IO.File.Create(Path.Combine(_options.Directory, file.FileName)))
+            using (var outFile = System.IO.File.Create(Path.Combine(_options.Directory, file.Name)))
             {
                 await fileStream.CopyToAsync(outFile, cancellationToken);
             }
@@ -52,9 +51,9 @@ namespace FileManager.BackEnd.Services
             {
                 file = new File()
                 {
-                    FileName = fileInfo.Name,
+                    Name = fileInfo.Name,
                     Size = fileInfo.Length,
-                    LastModified = fileInfo.LastWriteTime,
+                    LastModifiedDate = fileInfo.LastWriteTime.ToString(),
                     FileStream = fileInfo.OpenRead()
                 };
             }
@@ -73,6 +72,27 @@ namespace FileManager.BackEnd.Services
             {
                 fileInfo.Delete();
             }
+
+            return fileInfo.Exists;
+        }
+
+        public bool TryGetFileInfo(string filename, out File file)
+        {
+            var path = Path.Combine(_options.Directory, filename);
+            var fileInfo = new FileInfo(path);
+
+            if (fileInfo.Exists)
+            {
+                file = new File()
+                {
+                    Name = fileInfo.Name,
+                    Size = fileInfo.Length,
+                    LastModifiedDate = fileInfo.LastWriteTime.ToString(),
+                    FileStream = null
+                };
+            }
+            else
+                file = null;
 
             return fileInfo.Exists;
         }

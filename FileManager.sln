@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.28307.271
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{42BD035D-1493-427E-861E-9007C09BA40A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileManager.BackEnd", "src\FileManager.BackEnd\FileManager.BackEnd.csproj", "{E7C827A1-1B3E-4B90-985C-BB325BE7280E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FileManager", "src\FileManager\FileManager.csproj", "{E7C827A1-1B3E-4B90-985C-BB325BE7280E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
