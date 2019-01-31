@@ -1,5 +1,5 @@
 ﻿
-namespace FileManager.BackEnd.Models
+namespace FileManager.Models
 {
     public class FileManagerOptions
     {

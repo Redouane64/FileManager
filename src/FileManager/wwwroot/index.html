@@ -1,0 +1,90 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>File Manager</title>
+    <link rel="icon" href="favicon.png">
+    <link href="/css/lumen/bootstrap.min.css" rel="stylesheet" />
+    <script type="text/javascript" src="js/knockout-min.js"></script>
+    <script type="text/javascript" src="js/filesize.min.js"></script>
+    <script type="text/javascript" src="js/axios.min.js"></script>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <style>
+        input[type=file] {
+            display: none;
+        }
+        .table {
+            table-layout: fixed;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar sticky-top navbar-expand-xl navbar-dark bg-primary">
+        <div class="container justify-content-center">
+            <input type="file" name="file" id="file" data-bind="event: { change: function() { send($element.files[0]) } }">
+            <button id="upload-btn" class="btn btn-success btn-lg" type="submit">
+                Upload
+            </button>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <table class="table table-sm table-hover" style="border-bottom: 1px">
+                    <thead>
+                        <tr>
+                            <th scope="col" style="width: 3%">
+                            </th>
+                            <th scope="col" style="width: 50%">File</th>
+                            <th scope="col">Size</th>
+                            <th scope="col">Modified</th>
+                            <th scope=col></th>
+                        </tr>
+                    </thead>
+                    <tbody data-bind="foreach: files">
+                        <tr>
+                            <td scope="row">
+                                <img data-bind="attr: {src: icon}" height="24" width="24">
+                            </td>
+                            <td class="text-truncate">
+                                <span class="font-weight-normal" data-bind="title: name, text: name"></span>
+                            </td>
+                            <td data-bind="text: size"></td>
+                            <td data-bind="text: modified"></td>
+                            <td style="padding: 2px;">
+                                <div id="file-menu" class="btn-group-sm" role="group">
+                                    <button type="button" data-bind="click: $parent.view, enable: $parent.viewable($data)" class="btn btn-sm btn-primary">View</button>
+                                    <button type="button" data-bind="click: $parent.delete" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#deleteFileModal">Delete</button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/popper.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+    <script>
+        (function () {
+            var filesViewModel = new FilesViewModel();
+            ko.applyBindings(filesViewModel);
+
+            // Call fetch to retrieve remote data.
+            filesViewModel.fetch();
+        })();
+    </script>
+</body>
+
+</html>
