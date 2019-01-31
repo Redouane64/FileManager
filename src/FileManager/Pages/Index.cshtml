@@ -1,0 +1,47 @@
+﻿@page
+@{
+    ViewData["Title"] = "File Manager";
+}
+<div class="row" style="height: 96px; ">
+    <div class="col"></div>
+    <div class="col align-self-center alert alert-dismissible alert-secondary" style="margin: 8px; padding-right: 20px">
+        <strong>Uploading...</strong>
+        <div class="progress" style="background-color: white; ">
+            <div class="progress-bar progress-bar-striped bg-warning" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+    </div>
+    <div class="col"></div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <table class="table table-sm table-hover">
+            <thead>
+                <tr>
+                    <th scope="col" style="width: 3%"></th>
+                    <th scope="col" style="width: 50%">File</th>
+                    <th scope="col">Size</th>
+                    <th scope="col">Modified</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody data-bind="foreach: files">
+                <tr>
+                    <td scope="row">
+                        <img data-bind="attr: {src: icon}" height="24" width="24">
+                    </td>
+                    <td class="text-truncate">
+                        <span class="font-weight-normal" data-bind="title: name, text: name"></span>
+                    </td>
+                    <td data-bind="text: size"></td>
+                    <td data-bind="text: modified"></td>
+                    <td style="padding: 2px;">
+                        <div id="file-menu" class="btn-group-sm" role="group">
+                            <button type="button" data-bind="click: $parent.view, enable: $parent.viewable($data), css: { disabled: !$parent.viewable($data)}" class="btn btn-sm btn-primary disabled">View</button>
+                            <button type="button" data-bind="click: $parent.delete" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#deleteFileModal">Delete</button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

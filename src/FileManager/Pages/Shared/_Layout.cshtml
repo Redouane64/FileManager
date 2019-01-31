@@ -1,0 +1,55 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>@ViewData["Title"]</title>
+    <link rel="icon" href="favicon.png">
+    <link href="/css/lumen/bootstrap.min.css" rel="stylesheet" />
+    <script type="text/javascript" src="js/knockout-min.js"></script>
+    <script type="text/javascript" src="js/filesize.min.js"></script>
+    <script type="text/javascript" src="js/axios.min.js"></script>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <style>
+        input[type=file] {
+            display: none;
+        }
+
+        .table {
+            table-layout: fixed;
+            border: 2px solid #dee2e6;
+        }
+        thead > tr {
+            background-color: #dee2e6;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar sticky-top navbar-expand-xl navbar-dark bg-primary">
+        <div class="container justify-content-center">
+            <input type="file" name="file" id="file" data-bind="event: { change: function() { send($element.files[0]) } }">
+            <button id="upload-btn" class="btn btn-success btn-lg" type="submit">Upload</button>
+        </div>
+    </nav>
+    <div class="container">
+        @RenderBody()
+    </div>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/popper.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+    <script>
+        (function ()
+        {
+            var filesViewModel = new FilesViewModel();
+            ko.applyBindings(filesViewModel);
+
+            // Call fetch to retrieve remote data.
+            filesViewModel.fetch();
+        })();
+    </script>
+</body>
+</html>
