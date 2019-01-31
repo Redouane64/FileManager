@@ -16,6 +16,9 @@
         input[type=file] {
             display: none;
         }
+        .table {
+            table-layout: fixed;
+        }
     </style>
 </head>
 
@@ -30,16 +33,16 @@
         </div>
     </nav>
     <div class="container">
-        <div class="row align-items-start">
-            <div class="col-lg-12 justify-content-center">
+        <div class="row">
+            <div class="col-12">
                 <table class="table table-sm table-hover" style="border-bottom: 1px">
-                    <thead class="">
+                    <thead>
                         <tr>
-                            <th scope="col" style="width: 5%">
+                            <th scope="col" style="width: 3%">
                             </th>
-                            <th scope="col" style="width: 40%">File</th>
-                            <th scope="col" style="width: 10%">Size</th>
-                            <th scope="col" style="width: 20%">Modified</th>
+                            <th scope="col" style="width: 50%">File</th>
+                            <th scope="col">Size</th>
+                            <th scope="col">Modified</th>
                             <th scope=col></th>
                         </tr>
                     </thead>
@@ -48,10 +51,12 @@
                             <td scope="row">
                                 <img data-bind="attr: {src: icon}" height="24" width="24">
                             </td>
-                            <td data-bind="text: name"></td>
+                            <td class="text-truncate">
+                                <span class="font-weight-normal" data-bind="title: name, text: name"></span>
+                            </td>
                             <td data-bind="text: size"></td>
                             <td data-bind="text: modified"></td>
-                            <td style="padding: 2px">
+                            <td style="padding: 2px;">
                                 <div id="file-menu" class="btn-group-sm" role="group">
                                     <button type="button" data-bind="click: $parent.view, enable: $parent.viewable($data)" class="btn btn-sm btn-primary">View</button>
                                     <button type="button" data-bind="click: $parent.delete" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#deleteFileModal">Delete</button>
