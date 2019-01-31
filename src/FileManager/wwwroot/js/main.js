@@ -90,12 +90,28 @@ function FilesViewModel() {
     // delete file.
     self.delete = function (file)
     {
-
+        if (confirm("Do you want to delete file?"))
+        {
+            console.info("Deleting file ", file.name, "...");
+            deleteFile(file.location, null, {
+                success: function (response)
+                {
+                    self.files.remove(file);
+                },
+                fail: function (error)
+                {
+                    // TODO: Do something with error.
+                    console.error(error);
+                }
+            });
+        }
     };
 
     // view file.
-    self.view = function (file) {
-        
+    self.view = function (file)
+    {
+        console.assert(file.location !== undefined);
+        window.open(file.location);
     };
 
     // upload selected file.
