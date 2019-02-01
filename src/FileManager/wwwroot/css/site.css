@@ -1,0 +1,36 @@
+input[type=file] {
+    display: none;
+}
+
+table {
+    table-layout: fixed;
+    border: 2px solid #dee2e6;
+}
+
+thead > tr {
+    background-color: #ececec;
+}
+
+.file-icon-col {
+    min-width: 5%;
+}
+
+.file-name-col {
+    width: 45%;
+}
+
+.file-size-col {
+    width: 15%;
+}
+
+.file-modified-col {
+    width: 20%;
+}
+
+.file-tools-col {
+    width: 15%;
+}
+
+.notify-bar {
+    height: 5rem;
+}
