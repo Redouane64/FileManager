@@ -25,14 +25,14 @@ var File = function (data)
 
 };
 
-var upload = function (url, data, callbacks)
+var upload = function (url, data, config, callbacks)
 {
-    axios.post(url, data)
+    axios.post(url, data, config)
         .then(callbacks.success)
         .catch(callbacks.fail);
 };
 
-var deleteFile = function (url, data, callbacks)
+var erase = function (url, data, callbacks)
 {
     axios.delete(url, data)
          .then(callbacks.success)
@@ -46,28 +46,44 @@ var download = function (url, callbacks)
          .catch(callbacks.fail);
 };
 
+var peek = function (url, callbacks) {  
+    axios.head(url)
+        .then(callbacks.success)
+        .catch(callbacks.fail);
+};
+
 function FilesViewModel() {
     var self = this;
     
-    // api endpoint.
-    self.apiUrl = "/api/files/";
+    // api endpoint urls.
+    self.baseUrl = "/api/files/";
+    self.peekUrl = self.baseUrl + "peek/";
 
-    // properties and behaviors.
+    // query files from back-end api.
     self.fetch = function () {
         self.files([]);
-        download(self.apiUrl, {
+        download(self.baseUrl, {
             success: function (response) {
+
+                // map response data to File objects.
                 response.data.map(function (e) {
                     return new File(e);
                 }).forEach(function (file) {
 
-                    // TODO: attach missing data to file.
-                    axios.head(file.location)
-                        .then(function (response)
-                        {
+                    // attach missing data to file:
+                    // peek file content-type header from server to determine if
+                    // the file is of the viewable type.
+                    peek(file.location, {
+                        success: function (response) {
                             file.type(response.headers["content-type"]);
-                        });
-
+                        },
+                        fail: function (error) {
+                            // TODO: Do something with error.
+                            console.error(error);
+                        }
+                    });
+                    
+                    // add file to files list.
                     self.files.push(file);
                 });
             },
@@ -92,8 +108,7 @@ function FilesViewModel() {
     {
         if (confirm("Do you want to delete file?"))
         {
-            console.info("Deleting file ", file.name, "...");
-            deleteFile(file.location, null, {
+            erase(file.location, null, {
                 success: function (response)
                 {
                     self.files.remove(file);
@@ -110,44 +125,68 @@ function FilesViewModel() {
     // view file.
     self.view = function (file)
     {
-        console.assert(file.location !== undefined);
         window.open(file.location);
     };
 
+    // upload progress.
+    self.isUploading = ko.observable(false);
+    self.uploadProgress = ko.observable("0%");
+
     // upload selected file.
     self.send = function (file) {
-
+        setTimeout(function () { self.isUploading(true); }, 0);
         // Send to server.
         var data = new FormData();
         data.append("File", file);
 
-        upload(self.apiUrl, data, {
-            success: function ()
-            {
-                axios.head(self.apiUrl + "peek/" + file.name)
-                    .then(function (response)
-                    {
-                        var newFile = new File(file);
+        var config = {
+            onUploadProgress: function (e) {
+                // track upload progress.
+                self.uploadProgress(Math.round((e.loaded * 100) / e.total) + "%");
+            }
+        };
 
-                        newFile.location = response.headers["location"];
-                        var value = response.headers["lastmodifieddate"];
-                        newFile.modified(value);
+        setTimeout(function () {
+            upload(self.baseUrl, data, config, {
+                success: function () {
+                    var targetUrl = self.peekUrl + file.name;
+                    // Send head request to uploaded file to get correct last modified date
+                    // and location url to query content-type in the inner peek call (head request)
+                    // to determine if type can be viewed (and assgin correct icon in view list).
+                    peek(targetUrl, {
+                        success: function (response) {
+                            var newFile = new File(file);
 
-                        axios.head(newFile.location)
-                            .then(function (response)
-                            {
-                                newFile.type(response.headers["content-type"]);
+                            newFile.location = response.headers["location"];
+                            newFile.modified(response.headers["lastmodifieddate"]);
+                            
+                            peek(newFile.location, {
+                                success: function (response) {
+                                    newFile.type(response.headers["content-type"]);
+                                },
+                                fail: function (error) {
+                                    // TODO: Do something with error.
+                                    console.error(error);
+                                }
                             });
 
-                        self.files.push(newFile);
+                            self.files.push(newFile);
+                        },
+                        fail: function (error) {
+                            // TODO: Do something with error.
+                            console.error(error);
+                        }
                     });
-            },
-            fail: function ()
-            {
-                // TODO: Do something with error.
-            }
-        });
 
+                    setTimeout(function () { self.isUploading(false); }, 1000);
+
+                },
+                fail: function (error) {
+                    // TODO: Do something with error.
+                    console.error(error);
+                }
+            });
+        }, 1000);
     };
 };
 

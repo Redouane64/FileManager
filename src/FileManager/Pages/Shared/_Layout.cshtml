@@ -17,12 +17,13 @@
             display: none;
         }
 
-        .table {
+        table {
             table-layout: fixed;
             border: 2px solid #dee2e6;
         }
+
         thead > tr {
-            background-color: #dee2e6;
+            background-color: #ececec;
         }
     </style>
 </head>
@@ -42,8 +43,7 @@
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
     <script type="text/javascript" src="js/main.js"></script>
     <script>
-        (function ()
-        {
+        (function () {
             var filesViewModel = new FilesViewModel();
             ko.applyBindings(filesViewModel);
 

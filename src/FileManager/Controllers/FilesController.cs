@@ -61,6 +61,7 @@ namespace FileManager.Controllers
 
         // POST api/files
         [HttpPost(Name = nameof(PostAsync))]
+        [RequestSizeLimit(50_000_000)] // 50 MB as max payload size.
         public async Task<IActionResult> PostAsync(IFormFile file, CancellationToken cancellationToken = default)
         {
             
