@@ -36,10 +36,17 @@ thead > tr {
 }
 
 .notify-bar {
-    height: 5rem;
+    
 }
 
-#upload-progress-alert {
-    margin: 8px; 
-    padding-right: 20px
+.row {
+    margin-top: 1%;
+}
+
+#upload-progress-alert, #failure-alert {
+    padding-right: 20px;
+    position: absolute;
+    width: 15%;
+    bottom: 1%;
+    right: 2%;
 }

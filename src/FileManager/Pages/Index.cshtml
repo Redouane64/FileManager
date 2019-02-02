@@ -2,15 +2,19 @@
 @{
     ViewData["Title"] = "File Manager";
 }
-<div class="row notify-bar">
-    <div class="col"></div>
-    <div id="upload-progress-alert" class="col align-self-center alert alert-dismissible alert-secondary" data-bind="visible: isUploading">
+<div id="upload-progress-alert" class="col alert alert-secondary" data-bind="visible: isUploading">
+    <div>
         <strong>Uploading...</strong>
-        <div class="progress" style="background-color: white; ">
-            <div class="progress-bar progress-bar-striped bg-warning" data-bind="style: { width: uploadProgress() }" aria-valuemin="0" aria-valuemax="100"></div>
-        </div>
     </div>
-    <div class="col"></div>
+    <div class="progress" style="background-color: white; ">
+        <div class="progress-bar progress-bar-striped bg-warning" data-bind="style: { width: uploadProgress() }" aria-valuemin="0" aria-valuemax="100"></div>
+    </div>
+</div>
+<div id="failure-alert" class="col alert alert-warning alert-dismissable fade show" data-bind="visible: isUploading">
+    <strong>Something went wrong!</strong>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
 </div>
 <div class="row">
     <div class="col"></div>
