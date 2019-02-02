@@ -4,10 +4,10 @@
 }
 <div class="row notify-bar">
     <div class="col"></div>
-    <div class="col align-self-center alert alert-dismissible alert-secondary" style="margin: 8px; padding-right: 20px" data-bind="visible: isUploading">
+    <div id="upload-progress-alert" class="col align-self-center alert alert-dismissible alert-secondary" data-bind="visible: isUploading">
         <strong>Uploading...</strong>
         <div class="progress" style="background-color: white; ">
-            <div class="progress-bar progress-bar-striped bg-warning" role="progressbar" data-bind="style: { width: uploadProgress() }" aria-valuemin="0" aria-valuemax="100"></div>
+            <div class="progress-bar progress-bar-striped bg-warning" data-bind="style: { width: uploadProgress() }" aria-valuemin="0" aria-valuemax="100"></div>
         </div>
     </div>
     <div class="col"></div>
@@ -35,10 +35,10 @@
                     </td>
                     <td data-bind="text: size"></td>
                     <td data-bind="text: modified"></td>
-                    <td style="padding: 2px;">
+                    <td style="padding: 0.1rem;">
                         <div id="file-menu" class="btn-group-sm" role="group">
                             <button type="button" data-bind="click: $parent.view, enable: $parent.viewable($data), css: { disabled: !$parent.viewable($data)}" class="btn btn-sm btn-primary disabled">View</button>
-                            <button type="button" data-bind="click: $parent.delete" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#deleteFileModal">Delete</button>
+                            <button type="button" data-bind="click: $parent.delete" class="btn btn-sm btn-danger" data-toggle="modal">Delete</button>
                         </div>
                     </td>
                 </tr>
