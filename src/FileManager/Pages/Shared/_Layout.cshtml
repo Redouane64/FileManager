@@ -9,33 +9,9 @@
     <link rel="icon" href="favicon.png">
     <link href="/css/lumen/bootstrap.min.css" rel="stylesheet" />
     <link href="/css/site.css" rel="stylesheet" />
-    <script type="text/javascript" src="js/knockout-min.js"></script>
-    <script type="text/javascript" src="js/filesize.min.js"></script>
-    <script type="text/javascript" src="js/axios.min.js"></script>
 </head>
 <body>
-
-    <nav class="navbar sticky-top navbar-expand-xl navbar-dark bg-primary">
-        <div class="container justify-content-center">
-            <input type="file" name="file" id="file" data-bind="event: { change: function() { send($element.files[0]) } }">
-            <button id="upload-btn" class="btn btn-success btn-lg" type="submit">Upload</button>
-        </div>
-    </nav>
-    <div class="container">
-        @RenderBody()
-    </div>
-    <script type="text/javascript" src="js/jquery.min.js"></script>
-    <script type="text/javascript" src="js/popper.min.js"></script>
-    <script type="text/javascript" src="js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="js/main.js"></script>
-    <script>
-        (function () {
-            var filesViewModel = new FilesViewModel();
-            ko.applyBindings(filesViewModel);
-
-            // Call fetch to retrieve remote data.
-            filesViewModel.fetch();
-        })();
-    </script>
+    @RenderBody()
+    <script data-main="js/main" src="js/require.js"></script>
 </body>
 </html>

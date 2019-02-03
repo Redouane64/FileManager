@@ -11,6 +11,10 @@ thead > tr {
     background-color: #ececec;
 }
 
+.action-buttons {
+    padding: 1px;
+}
+
 .file-icon-col {
     min-width: 5%;
 }
@@ -31,6 +35,14 @@ thead > tr {
     width: 15%;
 }
 
-.notify-bar {
-    height: 5rem;
+.row {
+    margin-top: 1%;
+}
+
+#upload-progress-alert, #failure-alert {
+    padding-right: 20px;
+    position: absolute;
+    width: 15%;
+    bottom: 1%;
+    right: 2%;
 }
