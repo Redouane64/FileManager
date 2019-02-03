@@ -2,52 +2,5 @@
 @{
     ViewData["Title"] = "File Manager";
 }
-<div id="upload-progress-alert" class="col alert alert-secondary" data-bind="visible: isUploading">
-    <div>
-        <strong>Uploading...</strong>
-    </div>
-    <div class="progress" style="background-color: white; ">
-        <div class="progress-bar progress-bar-striped bg-warning" data-bind="style: { width: uploadProgress() }" aria-valuemin="0" aria-valuemax="100"></div>
-    </div>
-</div>
-<div id="failure-alert" class="col alert alert-warning alert-dismissable fade show" data-bind="visible: isUploading">
-    <strong>Something went wrong!</strong>
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
-</div>
-<div class="row">
-    <div class="col"></div>
-    <div class="col-10">
-        <table class="table table-sm table-hover">
-            <thead>
-                <tr>
-                    <th scope="col" class="file-icon-col"></th>
-                    <th scope="col" class="file-name-col">File</th>
-                    <th scope="col" class="file-size-col">Size</th>
-                    <th scope="col" class="file-modified-col">Modified</th>
-                    <th scope="col" class="file-tools-col"></th>
-                </tr>
-            </thead>
-            <tbody data-bind="foreach: files">
-                <tr>
-                    <td scope="row">
-                        <img data-bind="attr: {src: icon}" height="24" width="24">
-                    </td>
-                    <td class="text-truncate">
-                        <span class="font-weight-normal" data-bind="title: name, text: name"></span>
-                    </td>
-                    <td data-bind="text: size"></td>
-                    <td data-bind="text: modified"></td>
-                    <td style="padding: 0.1rem;">
-                        <div id="file-menu" class="btn-group-sm" role="group">
-                            <button type="button" data-bind="click: $parent.view, enable: $parent.viewable($data), css: { disabled: !$parent.viewable($data)}" class="btn btn-sm btn-primary disabled">View</button>
-                            <button type="button" data-bind="click: $parent.delete" class="btn btn-sm btn-danger" data-toggle="modal">Delete</button>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    <div class="col"></div>
-</div>
+
+<file-manager></file-manager>
