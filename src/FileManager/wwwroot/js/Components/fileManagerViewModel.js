@@ -1,10 +1,10 @@
 define([
-    "knockout", 
+    "knockout",
     "filesize",
     "utils"
 ], function (ko, filesize, utils) {
     "use strict";
-    
+
     // data model.
     var File = function (data) {
 
@@ -57,6 +57,7 @@ define([
                             },
                             fail: function (error) {
                                 // TODO: Do something with error.
+                                self.hasError(true);
                                 console.error(error);
                             }
                         });
@@ -67,6 +68,8 @@ define([
                 },
                 fail: function (error) {
                     // TODO: Do something with error.
+                    self.hasError(true);
+
                 }
             });
         };
@@ -90,7 +93,8 @@ define([
                     },
                     fail: function (error) {
                         // TODO: Do something with error.
-                        console.error(error);
+                        self.signalError()
+                            .hideAfter(2500);
                     }
                 });
             }
@@ -99,6 +103,24 @@ define([
         // view file.
         self.view = function (file) {
             window.open(file.location);
+        };
+
+        // error signal used to show error alert.
+        self.hasError = ko.observable(false);
+        
+        // helper function to set and unset error signal,
+        // thus to show error alert in the UI.
+        self.signalError = function () {
+            setTimeout(function () {
+                self.hasError(true)
+            }, 150);
+            return {
+                hideAfter: function (ms) {
+                    setInterval(function () {
+                        self.hasError(false);
+                    }, ms);
+                }
+            };
         };
 
         // upload progress.
@@ -139,7 +161,8 @@ define([
                                     },
                                     fail: function (error) {
                                         // TODO: Do something with error.
-                                        console.error(error);
+                                        self.hasError(true)
+                                            .hideAfter(2500);
                                     }
                                 });
 
@@ -147,16 +170,20 @@ define([
                             },
                             fail: function (error) {
                                 // TODO: Do something with error.
-                                console.error(error);
+                                self.hasError(true)
+                                    .hideAfter(2500);
                             }
                         });
 
+                        // Hide upload progress notification after 1000ms.
                         setTimeout(function () { self.isUploading(false); }, 1000);
 
                     },
                     fail: function (error) {
                         // TODO: Do something with error.
-                        console.error(error);
+                        self.isUploading(false);
+                        self.hasError(true)
+                            .hideAfter(2500);
                     }
                 });
             }, 1000);
