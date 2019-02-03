@@ -36,6 +36,7 @@ define([
         // api endpoint urls.
         self.baseUrl = "/api/files/";
         self.peekUrl = self.baseUrl + "peek/";
+        self.alertTime = 4000; // ms
 
         // query files from back-end api.
         self.fetch = function () {
@@ -57,8 +58,8 @@ define([
                             },
                             fail: function (error) {
                                 // TODO: Do something with error.
-                                self.hasError(true);
-                                console.error(error);
+                                self.signalAlert("Something went wrong!")
+                                    .hideAfter(self.alertTime);
                             }
                         });
 
@@ -68,8 +69,8 @@ define([
                 },
                 fail: function (error) {
                     // TODO: Do something with error.
-                    self.hasError(true);
-
+                    self.signalAlert("Something went wrong!")
+                        .hideAfter(self.alertTime);
                 }
             });
         };
@@ -93,9 +94,9 @@ define([
                     },
                     fail: function (error) {
                         // TODO: Do something with error.
-                        self.signalError()
-                            .hideAfter(2500);
-                    }
+                        self.signalAlert("Something went wrong!")
+                            .hideAfter(self.alertTime);
+        }
                 });
             }
         };
@@ -106,18 +107,21 @@ define([
         };
 
         // error signal used to show error alert.
-        self.hasError = ko.observable(false);
+        self.hasAlert = ko.observable(false);
+        self.alertMessage = ko.observable();
         
         // helper function to set and unset error signal,
         // thus to show error alert in the UI.
-        self.signalError = function () {
+        self.signalAlert = function (message) {
             setTimeout(function () {
-                self.hasError(true)
+                self.hasAlert(true);
+                self.alertMessage(message);
             }, 150);
             return {
                 hideAfter: function (ms) {
-                    setInterval(function () {
-                        self.hasError(false);
+                    setTimeout(function () {
+                        self.hasAlert(false);
+                        self.alertMessage("");
                     }, ms);
                 }
             };
@@ -129,7 +133,20 @@ define([
 
         // upload selected file.
         self.send = function (file) {
+            
+            if(!file) return;
+
+            // check if file already exist.
+            if(self.files().some(element => element.name === file.name)) 
+            {
+                self.signalAlert("File already exist.")
+                    .hideAfter(self.alertTime);
+
+                return;
+            }
+
             setTimeout(function () { self.isUploading(true); }, 0);
+
             // Send to server.
             var data = new FormData();
             data.append("File", file);
@@ -161,8 +178,9 @@ define([
                                     },
                                     fail: function (error) {
                                         // TODO: Do something with error.
-                                        self.hasError(true)
-                                            .hideAfter(2500);
+                                        self.signalAlert("Something went wrong!")
+                                            .hideAfter(self.alertTime);
+    
                                     }
                                 });
 
@@ -170,8 +188,8 @@ define([
                             },
                             fail: function (error) {
                                 // TODO: Do something with error.
-                                self.hasError(true)
-                                    .hideAfter(2500);
+                                self.signalAlert("Something went wrong!")
+                                    .hideAfter(self.alertTime);
                             }
                         });
 
@@ -182,8 +200,8 @@ define([
                     fail: function (error) {
                         // TODO: Do something with error.
                         self.isUploading(false);
-                        self.hasError(true)
-                            .hideAfter(2500);
+                        self.signalAlert("Something went wrong!")
+                            .hideAfter(self.alertTime);
                     }
                 });
             }, 1000);

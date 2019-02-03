@@ -75,7 +75,7 @@ namespace FileManager.Controllers
                 FileStream = formFile.OpenReadStream(),
                 Location = urlHelper.Link(nameof(FilesController.GetFile), new { formFile.FileName })
             };
-
+            
             await _filesService.CreateFileAsync(model, cancellationToken);
 
             return Ok();

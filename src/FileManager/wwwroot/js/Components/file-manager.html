@@ -23,8 +23,8 @@
     </div>
     <!-- Error notification. -->
     <div id="failure-alert" class="col alert alert-warning fade show"
-        data-bind="visible: hasError">
-        <strong>Something went wrong!</strong>
+        data-bind="visible: hasAlert">
+        <strong data-bind="text: alertMessage"></strong>
     </div>
     <!-- Files list panel. -->
     <div class="row">
