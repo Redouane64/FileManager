@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -25,7 +26,7 @@ namespace FileManager.Services
                                  .Select(fileInfo => new File
                                  {
                                      Name = fileInfo.Name,
-                                     Size =  fileInfo.Length,
+                                     Size = fileInfo.Length,
                                      LastModifiedDate = fileInfo.LastWriteTime.ToString()
                                  })
                                  .ToList();
@@ -35,10 +36,16 @@ namespace FileManager.Services
 
         public async Task CreateFileAsync(File file, CancellationToken cancellationToken)
         {
-            using (var fileStream = file.FileStream)
-            using (var outFile = System.IO.File.Create(Path.Combine(_options.Directory, file.Name)))
+            try
             {
-                await fileStream.CopyToAsync(outFile, cancellationToken);
+                using (var fileStream = file.FileStream)
+                using (var outFile = System.IO.File.Create(Path.Combine(_options.Directory, file.Name)))
+                {
+                    await fileStream.CopyToAsync(outFile, cancellationToken);
+                }
+            }
+            catch (IOException) {
+                throw;
             }
         }
 
@@ -70,7 +77,13 @@ namespace FileManager.Services
 
             if (fileInfo.Exists)
             {
-                fileInfo.Delete();
+                try 
+                {
+                    fileInfo.Delete();
+                }
+                catch(Exception) {
+                    throw;
+                }
             }
 
             return fileInfo.Exists;
