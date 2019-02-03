@@ -25,7 +25,7 @@ namespace FileManager
             services.AddMvc(options =>
             {
                 options.Filters.Add<FileResultFilter>();
-
+                options.Filters.Add<ApiExceptionFilter>();
             }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.AddResponseCompression(options => {
