@@ -1,11 +1,12 @@
 <!-- Upload button. -->
 <nav class="navbar sticky-top navbar-expand-xl navbar-dark bg-primary">
     <div class="container justify-content-center">
-        <input type="file" name="file" id="file" data-bind="event: { change: function() { send($element.files[0]) } }">
+        <input type="file" name="file" id="file" data-bind="event: { input: function() { send($element.files[0]) } }">
         <button id="upload-btn" class="btn btn-success btn-lg" type="submit" onclick="{
             // there must be a better way than declaring an inline click
             // handler within html.
             var filePicker = document.getElementById('file');
+            filePicker.value = '';
             filePicker.click();
         }">Upload</button>
     </div>
